@@ -1,0 +1,8 @@
+streamlit
+pypdf2
+langchain
+faiss-cpu
+huggingface_hub
+python-dotenv
+InstructorEmbedding
+sentence_transformers
