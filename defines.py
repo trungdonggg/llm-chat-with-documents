@@ -3,15 +3,11 @@ from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-import os
-from dotenv import load_dotenv
-load_dotenv()
-import requests
-import faiss
-import numpy
-from langchain.llms import HuggingFaceHub
-# from langchain_community.vectorstores import FAISS
-# from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+from langchain_community.llms import HuggingFaceHub
+from langchain_community.vectorstores import FAISS
+from modules import CustomEmbeddings
+
+
 
 
 def get_pdf_text(pdf_docs)->str:
@@ -28,8 +24,8 @@ def get_pdf_text(pdf_docs)->str:
 def get_text_chunked(raw_text):
     text_splitter = CharacterTextSplitter(
         separator = '\n',
-        chunk_size = 200,
-        chunk_overlap = 20,
+        chunk_size = 1000,
+        chunk_overlap = 200,
         length_function = len
     )
     chunked_text = text_splitter.split_text(raw_text) 
@@ -39,15 +35,9 @@ def get_text_chunked(raw_text):
 
 
 def get_vectorstore(chunked_text):
-    model_id = "sentence-transformers/all-MiniLM-L6-v2"
-    hf_token = os.getenv('HUGGINGFACEHUB_API_TOKEN')
-    api_url = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{model_id}"
-    headers = {"Authorization": f"Bearer {hf_token}"}
-    response = requests.post(api_url, headers=headers, json={"inputs": chunked_text, "options":{"wait_for_model":True}})
-    vectors = numpy.array(response.json())
-    dimension = vectors.shape[1]  
-    vectorstore = faiss.IndexFlatL2(dimension) 
-    vectorstore.add(vectors)
+    custom_embeddings = CustomEmbeddings()
+    embeddings = custom_embeddings.embed(chunked_text)
+    vectorstore = FAISS.from_embeddings(embeddings)
 
     return vectorstore
 
@@ -63,3 +53,9 @@ def get_conversation_chain(vectorstore):
     )
 
     return conversation_chain 
+
+
+
+def handle_user_input(conv, promt):
+    response = conv({'question': promt})
+    st.write(response)

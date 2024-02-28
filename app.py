@@ -2,6 +2,7 @@ import streamlit as st
 from dotenv import load_dotenv 
 import defines 
 
+# at 56:00
 
 def main():
 
@@ -13,7 +14,8 @@ def main():
         st.session_state.conversation = None
 
     st.header('Chat with multiple PDFs :books:')
-    st.text_input('Ask questions you want to know ...')
+    # st.text_input('Ask questions you want to know ...')
+    promt = st.chat_input('Asking question ...')
 
 
     with st.sidebar:
@@ -35,7 +37,8 @@ def main():
                 # Create conversation
                 st.session_state.conversation = defines.get_conversation_chain(vectorstore)
 
-    
+    if promt:
+        defines.handle_user_input(st.session_state.conversation, promt)
 
 if __name__=="__main__":
     main()
