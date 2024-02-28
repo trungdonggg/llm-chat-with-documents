@@ -1,8 +1,6 @@
 import streamlit as st
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
-# from langchain_community.vectorstores import FAISS
-# from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 import os
@@ -11,6 +9,10 @@ load_dotenv()
 import requests
 import faiss
 import numpy
+from langchain.llms import HuggingFaceHub
+# from langchain_community.vectorstores import FAISS
+# from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+
 
 def get_pdf_text(pdf_docs)->str:
     text = ''
@@ -52,7 +54,7 @@ def get_vectorstore(chunked_text):
 
 
 def get_conversation_chain(vectorstore):
-    llm = None
+    llm = HuggingFaceHub(repo_id = 'google/flan-t5-xxl', model_kwargs={'temparature':0.5, 'max_length':512})
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
@@ -61,14 +63,3 @@ def get_conversation_chain(vectorstore):
     )
 
     return conversation_chain 
-
-
-# text = '''Datasets is a library for quickly accessing and sharing datasets. Let's host the embeddings dataset in the Hub using the user interface (UI). Then, anyone can load it with a single line of code. You can also use the terminal to share datasets; see the documentation for the steps. In the notebook companion of this entry, you will be able to use the terminal to share the dataset. If you want to skip this section, check out the ITESM/embedded_faqs_medicare repo with the embedded FAQs.
-
-# First, we export our embeddings from a Pandas DataFrame to a CSV. You can save your dataset in any way you prefer, e.g., zip or pickle; you don't need to use Pandas or CSV. Since our embeddings file is not large, we can store it in a CSV, which is easily inferred by the datasets.load_dataset() function we will employ in the next section (see the Datasets documentation), i.e., we don't need to create a loading script. We will save the embeddings with the name embeddings.csv. Datasets is a library for quickly accessing and sharing datasets. Let's host the embeddings dataset in the Hub using the user interface (UI). Then, anyone can load it with a single line of code. You can also use the terminal to share datasets; see the documentation for the steps. In the notebook companion of this entry, you will be able to use the terminal to share the dataset. If you want to skip this section, check out the ITESM/embedded_faqs_medicare repo with the embedded FAQs.
-
-# First, we export our embeddings from a Pandas DataFrame to a CSV. You can save your dataset in any way you prefer, e.g., zip or pickle; you don't need to use Pandas or CSV. Since our embeddings file is not large, we can store it in a CSV, which is easily inferred by the datasets.load_dataset() function we will employ in the next section (see the Datasets documentation), i.e., we don't need to create a loading script. We will save the embeddings with the name embeddings.csv.'''
-
-# ct = get_text_chunked(text)
-# v = get_vectorstore(ct)
-# print(v)
