@@ -2,7 +2,6 @@ import streamlit as st
 from dotenv import load_dotenv 
 import defines 
 
-# At 50:00
 
 def main():
 
@@ -29,12 +28,13 @@ def main():
 
                 # Chunk text
                 chunked_text = defines.get_text_chunked(raw_text)
-                
+
                 # Create database
                 vectorstore = defines.get_vectorstore(chunked_text)
-
+                st.write(vectorstore)
+                
                 # Create conversation
-                st.session_state.conversation = defines.get_conversation_chain(vectorstore)
+                # st.session_state.conversation = defines.get_conversation_chain(vectorstore)
 
     
 
