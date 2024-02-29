@@ -2,7 +2,7 @@ import streamlit as st
 from dotenv import load_dotenv 
 import defines 
 
-# at 56:00
+
 
 def main():
 

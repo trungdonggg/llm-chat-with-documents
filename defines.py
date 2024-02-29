@@ -4,11 +4,9 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain_community.llms import HuggingFaceHub
-from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
-import os
-from dotenv import load_dotenv
-load_dotenv()
+from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from langchain_community.vectorstores import Chroma
+
 
 
 
@@ -37,13 +35,10 @@ def get_text_chunked(raw_text):
 
 
 def get_vectorstore(chunked_text):
-    hf_token = os.getenv('HUGGINGFACEHUB_API_TOKEN')
-    embeddings = HuggingFaceInferenceAPIEmbeddings(api_key=hf_token, model_name="sentence-transformers/all-MiniLM-l6-v2")
-    vectorstore = FAISS.from_texts(chunked_text, embeddings)
+    embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    vectorstore = Chroma.from_texts(chunked_text, embedding_function)
 
     return vectorstore
-
-
 
 
 
@@ -60,6 +55,8 @@ def get_conversation_chain(vectorstore):
 
 
 
+
 def handle_user_input(conv, promt):
     response = conv({'question': promt})
     st.write(response)
+
