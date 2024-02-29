@@ -5,8 +5,10 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain_community.llms import HuggingFaceHub
 from langchain_community.vectorstores import FAISS
-from modules import CustomEmbeddings
-
+from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 
@@ -35,11 +37,13 @@ def get_text_chunked(raw_text):
 
 
 def get_vectorstore(chunked_text):
-    custom_embeddings = CustomEmbeddings()
-    embeddings = custom_embeddings.embed(chunked_text)
-    vectorstore = FAISS.from_embeddings(embeddings)
+    hf_token = os.getenv('HUGGINGFACEHUB_API_TOKEN')
+    embeddings = HuggingFaceInferenceAPIEmbeddings(api_key=hf_token, model_name="sentence-transformers/all-MiniLM-l6-v2")
+    vectorstore = FAISS.from_texts(chunked_text, embeddings)
 
     return vectorstore
+
+
 
 
 
