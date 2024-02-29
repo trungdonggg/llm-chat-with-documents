@@ -43,7 +43,7 @@ def get_vectorstore(chunked_text):
 
 
 def get_conversation_chain(vectorstore):
-    llm = HuggingFaceHub(repo_id = 'google/flan-t5-xxl', model_kwargs={'temparature':0.5, 'max_length':512})
+    llm = HuggingFaceHub(repo_id = 'bigscience/bloom', )
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
@@ -58,5 +58,14 @@ def get_conversation_chain(vectorstore):
 
 def handle_user_input(conv, promt):
     response = conv({'question': promt})
-    st.write(response)
+    # st.write(response)
+    st.session_state.chat_history = response['chat_history']
+    for i, message in enumerate(st.session_state.chat_history):
+        if i % 2 == 0:
+            with st.chat_message("assistant"):
+                st.markdown(message.content)
+        else:
+            with st.chat_message("user"):
+                st.markdown(message.content)
+            
 
