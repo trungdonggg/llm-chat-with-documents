@@ -2,8 +2,4 @@ streamlit
 pypdf2
 langchain
 langchain-community
-huggingface_hub
 python-dotenv
-InstructorEmbedding
-sentence_transformers
-chromadb

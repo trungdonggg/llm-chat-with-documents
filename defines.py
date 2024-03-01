@@ -2,7 +2,7 @@ import streamlit as st
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.llms import HuggingFaceHub
-from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+from langchain_community.embeddings import HuggingFaceHubEmbeddings
 from langchain_community.vectorstores import FAISS  
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
@@ -33,7 +33,7 @@ def get_text_chunked(raw_text):
 
 
 def get_vectorstore(chunked_text):
-    embeddings = HuggingFaceInstructEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = HuggingFaceHubEmbeddings(repo_id='sentence-transformers/all-MiniLM-L6-v2')
     vectorstore = FAISS.from_texts(texts=chunked_text, embedding=embeddings)
 
     return vectorstore
@@ -42,7 +42,6 @@ def get_vectorstore(chunked_text):
 
 def get_conversation_chain(vectorstore):
     llm = HuggingFaceHub(repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1", model_kwargs={"temperature":0.5, "max_length":512})
-    # OpenAssistant/oasst-sft-1-pythia-12b
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
