@@ -8,7 +8,7 @@ def main():
 
     load_dotenv()
 
-    st.set_page_config(page_title='ai_pdfs', page_icon=':rocket:')
+    st.set_page_config(page_title='ai_chat_pdfs', page_icon=':rocket:')
 
     if 'conversation' not in st.session_state:
         st.session_state.conversation = None
@@ -17,7 +17,6 @@ def main():
         st.session_state.chat_history = None
 
     st.header('Chat with multiple PDFs :books:')
-    # st.text_input('Ask questions you want to know ...')
     promt = st.chat_input('Asking question ...')
 
 
@@ -39,6 +38,8 @@ def main():
                 
                 # Create conversation
                 st.session_state.conversation = defines.get_conversation_chain(vectorstore)
+
+                st.markdown('Done processing')
 
     if promt:
         defines.handle_user_input(st.session_state.conversation, promt)
