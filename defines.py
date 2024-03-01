@@ -55,16 +55,15 @@ def get_conversation_chain(vectorstore):
 
 
 def handle_user_input(conv, promt):
-    response = conv.run(promt)
-    st.markdown(response)
-    # st.session_state.chat_history = response['chat_history']
-    # for i, message in enumerate(st.session_state.chat_history):
-    #     if i % 2 == 0:
-    #         with st.chat_message("assistant"):
-    #             st.markdown(message.content)
-    #     else:
-    #         with st.chat_message("user"):
-    #             st.markdown(message.content)
+    response = st.session_state.conversation({'question': promt})
+    st.session_state.chat_history = response['chat_history']
+    for i, message in enumerate(st.session_state.chat_history):
+        if i % 2 == 0:
+            with st.chat_message("user"):
+                st.markdown(message.content)
+        else:
+            with st.chat_message("assistant"):
+                st.markdown(message.content)
             
 
 
