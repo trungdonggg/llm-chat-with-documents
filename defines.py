@@ -11,13 +11,17 @@ from langchain.chains import ConversationalRetrievalChain
 
 
 
-def get_pdf_text(pdf_docs):
+def read_files(files):
     text = ''
-    for pdf in pdf_docs:
-        pdf_reader = PdfReader(pdf)
-        for page in pdf_reader.pages:
-            text+= page.extract_text()
-
+    for f in files:
+        if f.type=='application/pdf':
+            pdf_reader = PdfReader(f)
+            for page in pdf_reader.pages:
+                text += page.extract_text()
+        else:
+            file_content = f.getvalue().decode("utf-8")
+            text += file_content
+            
     return text
 
 

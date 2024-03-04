@@ -1,13 +1,12 @@
 import streamlit as st
 import defines 
 from dotenv import load_dotenv 
-import os
 
 
 def main():
     load_dotenv()
 
-    st.set_page_config(page_title='ai_chat_pdfs', page_icon=':rocket:')
+    st.set_page_config(page_title='chat_with_documents', page_icon=':rocket:')
 
     if 'conversation' not in st.session_state:
         st.session_state.conversation = None
@@ -15,19 +14,19 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
-    st.header('Chat with multiple PDFs :books:')
+    st.header('Chat with multiple documents :books:')
     promt = st.chat_input('Asking question ...')
 
 
     with st.sidebar:
         st.subheader('Your documents:')
 
-        pdf_docs = st.file_uploader('Upload your PDFs here:', accept_multiple_files=True)
+        files = st.file_uploader('Upload your documents here:', accept_multiple_files=True, type=['pdf','txt'])
 
         if st.button('Start processing'):
             with st.spinner('Processing...'):
                 # Get text
-                raw_text = defines.get_pdf_text(pdf_docs)
+                raw_text = defines.read_files(files)
 
                 # Chunk text
                 chunked_text = defines.get_text_chunked(raw_text)
