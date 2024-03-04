@@ -6,10 +6,10 @@ from langchain_community.embeddings import HuggingFaceHubEmbeddings
 from langchain_community.vectorstores import FAISS  
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-from dotenv import load_dotenv 
-import os
 # (langchain 0.1.0)
-load_dotenv()
+
+
+
 
 def get_pdf_text(pdf_docs):
     text = ''
@@ -44,8 +44,7 @@ def get_vectorstore(chunked_text):
 
 
 def get_conversation_chain(vectorstore):
-    api_key = os.getenv("HUGGINGFACEHUB_API_TOKEN")
-    llm = HuggingFaceHub(huggingfacehub_api_token=api_key,repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1", model_kwargs={"temperature":0.5, "max_length":512})
+    llm = HuggingFaceHub(repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1", model_kwargs={"temperature":0.5, "max_length":512})
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,

@@ -1,9 +1,11 @@
 import streamlit as st
 import defines 
-
+from dotenv import load_dotenv 
+import os
 
 
 def main():
+    load_dotenv()
 
     st.set_page_config(page_title='ai_chat_pdfs', page_icon=':rocket:')
 
