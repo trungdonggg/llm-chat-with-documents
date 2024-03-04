@@ -1,7 +1,7 @@
 # chat with multiple documents
 
 ## Architecture
-![Chat with Documents](https://example.com/chat_with_documents.png)
+![Chat with Documents](https://miro.medium.com/v2/resize:fit:1400/0*BnhkosPmaEq0xe6E.jpeg)
 
 ## Description:
 The "Chat with Documents" project is a web application that allows users to querry on documents in real-time. The application provides a chat interface where users can chat with LLM about uploaded documents. Once a document is uploaded, it becomes accessible to LLM of the chat. This project try to exploit the potential about the combination of Langchain and HuggingFaceHub
