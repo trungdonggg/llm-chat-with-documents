@@ -4,7 +4,7 @@
 ![Chat with Documents](https://miro.medium.com/v2/resize:fit:1400/0*BnhkosPmaEq0xe6E.jpeg)
 
 ## Description:
-The "Chat with Documents" project is a web application that allows users to querry on documents in real-time. The application provides a chat interface where users can chat with LLM about uploaded documents. Once a document is uploaded, it becomes accessible to LLM of the chat. This project try to exploit the potential about the combination of Langchain and HuggingFaceHub
+The "Chat with Documents" project is a web application that allows users to querry on documents in real-time. The application provides a chat interface where users can chat with LLM about uploaded documents. Once a document is uploaded, it becomes accessible to LLM of the chat. This project aim to exploit the potential about the combination of Langchain and HuggingFaceHub
 
 ## Features:
 
@@ -20,7 +20,7 @@ Backend: Python
 
 Database: FAISS
 
-Deployment: Langchain, HuggingfaceHub, HuggingFace Space
+Deployment: Langchain, HuggingFaceHub, HuggingFaceSpace
 
 ## Contact:
 For questions or inquiries about the "Chat with Documents" project, please contact my email at trungdonggg@gmail.com.
